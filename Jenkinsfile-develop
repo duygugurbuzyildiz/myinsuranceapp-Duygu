@@ -20,10 +20,6 @@ pipeline {
                 echo 'Unit/Integration...'
                 sh 'python3 -m unittest discover -s tests/unit -v'
             }
-        stage('Acceptance tests') {
-           steps {
-                echo 'Acceptance test...'
-            }
         }
         stage('Create image') {
             steps {
@@ -37,6 +33,12 @@ pipeline {
                 withDockerRegistry([ credentialsId: "acr-credentials-hackaton", url: "http://hackathonimages.azurecr.io"]) {
                     sh 'docker push hackathonimages.azurecr.io/myinsuranceappduygu:v8'
                 }
+            }
+        }
+        stage('Acceptance tests') {
+            steps {
+                echo 'Acceptance...'
+                sh 'python3 -m unittest discover -s tests/acceptance-flask/ -v'
             }
         }
     }
