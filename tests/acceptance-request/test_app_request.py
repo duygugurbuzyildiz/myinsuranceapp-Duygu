@@ -37,4 +37,13 @@ class TestApp(unittest.TestCase):
         print(f"get_user_products: {data}")
         self.assertTrue(response.status_code > 400)
     
+    def test_4_add_product(self):
+        headers = {"Authorization": f"Bearer {TestApp.token}"}
+        user_data = {"id":3}
+        response = requests.post(f"{self.base_url}/users/2/products", json=user_data, headers=headers)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.text)
+        print(data)
+        self.assertEqual(data[-1]["id"], user_data["id"])
+    
 

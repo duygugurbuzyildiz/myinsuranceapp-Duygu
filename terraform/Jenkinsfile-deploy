@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'deploy', url: 'https://github.com/duygugurbuzyildiz/myinsuranceapp-Duygu.git'
+	        }
+        }        
+        stage('Requirements') {
+            steps {
+                echo 'Installing dependencies...'
+                sh 'pip3 install -r requirements.txt'
+                sh 'python3 project/init/init_db.py'
+            }
+        }
+        stage('Unit/Integration tests') {
+           steps {
+                echo 'Unit/Integration...'
+                sh 'python3 -m unittest discover -s tests/unit -v'
+            }
+        }
+        stage('Acceptance tests-flask') {
+            steps{
+                echo 'Acceptance tests...'
+                sh 'python3 -m unittest discover -s tests/acceptance-flask -v'
+            }
+        }
+        stage('Apply Kubernetes ') {
+            steps {
+                echo 'Executing Kubernetes...'
+                withKubeConfig([credentialsId: 'k8-credentials',
+                                serverUrl: 'https://cuddly-crow-k8s-fb95f145.hcp.eastasia.azmk8s.io',
+                                contextName: 'akshackathonduygu-aks',
+                                clusterName: 'akshackathonduygu-aks',
+                                namespace: 'default'
+                ]) {
+                    sh 'kubectl apply -f kubernetes/1-myinsuranceappduygu-deployment.yaml'
+                    sh 'kubectl apply -f kubernetes/2-myinsuranceappduygu-service.yaml'
+                    sh 'kubectl get all'
+                    sh 'kubectl port-forward service/myinsuranceappduygu-az 5050:5000 &'
+                    sleep 20
+                }
+            }
+        }
+        stage('External acceptance tests') {
+            steps{
+                echo 'External acceptance tests...'
+                sh 'python3 -m unittest discover -s tests/acceptance-request -v'
+                
+            }
+        }
+    }
+}
