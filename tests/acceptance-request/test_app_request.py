@@ -36,7 +36,7 @@ class TestApp(unittest.TestCase):
         data=json.loads(response.text)
         print(f"get_user_products: {data}")
         self.assertTrue(response.status_code > 400)
-    
+
     def test_4_add_product(self):
         headers = {"Authorization": f"Bearer {TestApp.token}"}
         user_data = {"id":3}
@@ -45,5 +45,4 @@ class TestApp(unittest.TestCase):
         data = json.loads(response.text)
         print(data)
         self.assertEqual(data[-1]["id"], user_data["id"])
-    
 

@@ -35,7 +35,7 @@ class TestApp(unittest.TestCase):
         data=json.loads(response.text)
         print(f"get_user_products: {data}")
         self.assertTrue(response.status_code > 400)
-    
+
     def test_4_add_product(self):
         tester = app.test_client(self)
         headers = {"Authorization": f"Bearer {TestApp.token}"}
