@@ -35,3 +35,13 @@ class TestApp(unittest.TestCase):
         data=json.loads(response.text)
         print(f"get_user_products: {data}")
         self.assertTrue(response.status_code > 400)
+    
+    def test_4_add_product(self):
+        tester = app.test_client(self)
+        headers = {"Authorization": f"Bearer {TestApp.token}"}
+        user_data = {"id":3}
+        response = tester.post('/api/v1/users/2/products', json=user_data, headers=headers, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.text)
+        print(data)
+        self.assertEqual(data[-1]["id"], user_data["id"])
