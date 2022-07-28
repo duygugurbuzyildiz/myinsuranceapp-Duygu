@@ -18,7 +18,7 @@ spec:
       - name: acr-secret
       containers:
       - name: myinsuranceappduygu-az
-        image: duygu.azurecr.io/myinsuranceappduygu:v8
+        image: hackathonimages.azurecr.io/myinsuranceappduygu:v8
         ports:
         - name: http
           containerPort: 5000
