@@ -4,7 +4,7 @@ import requests
 
 class TestApp(unittest.TestCase):
     token=''
-    base_url='http://localhost:5000/api/v1'
+    base_url='http://localhost:5050/api/v1'
 
     def test_1_getToken(self):
         url=f"{self.base_url}/token"
