@@ -20,6 +20,10 @@ pipeline {
                 echo 'Unit/Integration...'
                 sh 'python3 -m unittest discover -s tests/unit -v'
             }
+        stage('Acceptance tests') {
+           steps {
+                echo 'Acceptance test...'
+            }
         }
         stage('Create image') {
             steps {
