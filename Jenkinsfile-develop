@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'develop',url: 'https://github.com/duygugurbuzyildiz/myinsuranceapp-Duygu.git'
+                git branch: 'master',url: 'https://github.com/duygugurbuzyildiz/myinsuranceapp-Duygu.git'
 	        }
         }        
         stage('Requirements') {
@@ -21,6 +21,12 @@ pipeline {
                 sh 'python3 -m unittest discover -s tests/unit -v'
             }
         }
+        stage('Acceptance tests') {
+            steps {
+                echo 'Acceptance...'
+                sh 'python3 -m unittest discover -s tests/acceptance-flask/ -v'
+            }
+        }
         stage('Create image') {
             steps {
                 echo 'creating image...'
@@ -33,12 +39,6 @@ pipeline {
                 withDockerRegistry([ credentialsId: "acr-credentials-hackaton", url: "http://hackathonimages.azurecr.io"]) {
                     sh 'docker push hackathonimages.azurecr.io/myinsuranceappduygu:v8'
                 }
-            }
-        }
-        stage('Acceptance tests') {
-            steps {
-                echo 'Acceptance...'
-                sh 'python3 -m unittest discover -s tests/acceptance-flask/ -v'
             }
         }
     }
