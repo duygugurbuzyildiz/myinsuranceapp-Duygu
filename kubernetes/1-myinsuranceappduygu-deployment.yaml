@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myinsuranceappduygu-deployment
+  name: myinsuranceappduygu-deployment-az
   labels:
-    app: myinsuranceappduygu
+    app: myinsuranceappduygu-az
 spec:
   replicas: 8
   selector:
     matchLabels:
-      app: myinsuranceappduygu
+      app: myinsuranceappduygu-az
   template:
     metadata:
       labels:
-        app: myinsuranceappduygu
+        app: myinsuranceappduygu-az
     spec:
+      imagePullSecrets:
+      - name: acr-secret
       containers:
-      - name: myinsuranceappduygu
+      - name: myinsuranceappduygu-az
         image: duygu.azurecr.io/myinsuranceappduygu:v8
         ports:
         - name: http

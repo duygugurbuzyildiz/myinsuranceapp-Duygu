@@ -1,4 +1,4 @@
-resource "akshackathonduygu"
+resource "random_pet" "prefix" {}
 
 provider "azurerm" {
   features {}
@@ -31,9 +31,6 @@ resource "azurerm_kubernetes_cluster" "default" {
     client_secret = var.PASSWORD
   }
 
-  role_based_access_control {
-    enabled = true
-  }
 
   tags = {
     environment = "Demo"
