@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myinsuranceapp-v1-deployment-az
+  labels:
+    app: myinsuranceapp-v1-az
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: myinsuranceapp-v1-az
+  template:
+    metadata:
+      labels:
+        app: myinsuranceapp-v1-az
+    spec:
+      imagePullSecrets:
+      - name: acr-secret
+      containers:
+      - name: myinsuranceapp-v1-az
+        image: hackathonimages.azurecr.io/myinsuranceappduygu:v8
+        ports:
+        - name: http
+          containerPort: 5000
